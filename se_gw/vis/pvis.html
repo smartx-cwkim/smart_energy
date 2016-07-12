@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		body { 
+			font: 14px helvetica neue, helvetica, arial, sans-serif;
+		}
+
+		#cy {
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background-color: #FAEDEF;
+		}
+	</style>
+<meta charset=utf-8 />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+<title>Performance Visualization</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
+</head>
+<body>
+<div id="cy"></div>
+<script>
+
+	
+$(function(){ // on dom ready
+	var cy;
+	drawT();
+
+	function drawT(){
+		$.ajax({
+			method: "GET",
+			url: "http://203.237.53.78:11111/data",
+			dataType: "text",
+			success: function(res){
+				res = JSON.parse(res);
+				var topo = {"nodes":res.nodes, "edges":res.edges};
+				drawTopo(topo)
+			}
+		});
+	}
+	function drawTopo(topo){
+		cy = cytoscape({
+			container: document.getElementById('cy'),
+			boxSelectionEnabled: false,
+			autounselectify: true,
+	//		$('#cy').cytoscape({
+			style: cytoscape.stylesheet()
+			.selector('node')
+			  .css({
+				'background-color': 'data(module)',
+				'width': 'mapData(delay, 0, 10, 10, 40)',
+				'height': 'mapData(delay, 0, 10, 10, 40)',
+				'content': 'data(tag)'
+			  })
+			.selector('edge')
+			  .css({
+				'target-arrow-shape': 'triangle',
+				'width': 5,
+				'line-color': '#F2B1BA',
+				'target-arrow-color': '#F2B1BA',
+				'curve-style': 'bezier'
+			  })
+			.selector(':selected')
+			  .css({
+				'background-color': 'black',
+				'line-color': 'black',
+				'target-arrow-color': 'black',
+				'source-arrow-color': 'black',
+				'opacity': 1
+			  })
+			.selector('.faded')
+			  .css({
+				'opacity': 0.25,
+				'text-opacity': 0
+			  }),
+			elements: topo,
+		  
+			layout: {
+				name: 'circle'
+			},
+			  
+			ready: function(){
+				// ready 1
+			}
+		});
+	}
+	function update(){
+		drawT();
+	}
+	setInterval(update, 1000);
+	
+}); // on dom ready
+
+</script>
+</body>
+</html>
+

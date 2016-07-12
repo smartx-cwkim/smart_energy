@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+<testsuite name="Frisby Test: killprocess" errors="0" tests="1" failures="0" time="0.015" timestamp="2016-06-09T15:14:35">
+  <testcase classname="Frisby Test: killprocess" name="
+	[ GET http://116.89.190.134:5555/v0.1/killprocess ]" time="0.014"></testcase>
+</testsuite>
+</testsuites>
