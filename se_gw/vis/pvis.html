@@ -18,8 +18,8 @@
 <meta charset=utf-8 />
 <meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
 <title>Performance Visualization</title>
-<script src="jquery.min.js"></script>
-<script src="cytoscape.min.js"></script>
+<script src="http://192.168.88.91:11111/jquery"></script>
+<script src="http://192.168.88.91:11111/cytoscape"></script>
 </head>
 <body>
 <div id="cy"></div>
@@ -33,7 +33,7 @@ $(function(){ // on dom ready
 	function drawT(){
 		$.ajax({
 			method: "GET",
-			url: "http://203.237.53.78:11111/data",
+			url: "http://192.168.88.91:11111/data",
 			dataType: "text",
 			success: function(res){
 				res = JSON.parse(res);

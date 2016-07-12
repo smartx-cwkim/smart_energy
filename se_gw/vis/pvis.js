@@ -29,6 +29,14 @@ function Pvis(){
     res.sendFile(__dirname + '/pvis.html');
   });
 
+  this.app.get('/jquery', function(req, res){
+    res.sendFile(__dirname + '/jquery.min.js');
+  });
+
+  this.app.get('/cytoscape', function(req, res){
+    res.sendFile(__dirname + '/cytoscape.min.js');
+  });
+
   this.app.listen(11111);
 }
 
