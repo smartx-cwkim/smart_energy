@@ -28,7 +28,7 @@ var label;
 var t;
 var controller = function(delays, total, cb){
 //    consolGe.log(m);
-  request('http://192.168.88.103:7777/sthcontrol', function(err, res, body){
+  request('http://192.168.88.101:7777/sthcontrol', function(err, res, body){
     t = res.caseless.get('x-response-time');
     t = t.substring(0, t.length-2);
     t = parseFloat(t);
