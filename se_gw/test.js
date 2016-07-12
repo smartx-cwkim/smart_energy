@@ -42,7 +42,7 @@ var controller = function(delays, total, cb){
 var tController = timely.async(controller);
 
 var dataExtractor = function(){
-//  factorial(300);
+  factorial(150);
   return 'DataExtractor';
 };
 var tDataExtractor = timely(dataExtractor);
@@ -85,7 +85,8 @@ var dataLoader = function(){
     delays = [];
 
     timestamp = new Date();
-    diff = timestamp.getTime() - parseInt(msg.when);
+    diff = Math.random()*2;
+//    diff = timestamp.getTime() - parseInt(msg.when);
     label = "DataLoader\ndelay: "+diff+"ms";
     delays.push({data:{id: "DataLoader", module: "#B3767E", delay: diff, tag: label}});
     total = diff;
