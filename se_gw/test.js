@@ -42,7 +42,7 @@ var controller = function(delays, total, cb){
 var tController = timely.async(controller);
 
 var dataExtractor = function(){
-  factorial(150);
+  factorial(10);
   return 'DataExtractor';
 };
 var tDataExtractor = timely(dataExtractor);
