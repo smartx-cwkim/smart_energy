@@ -4,10 +4,8 @@ var bodyParser = require('body-parser');
 var factorial = require('big-factorial');
 var app = express();
 var request = require('request');
-var Pvis = require('./vis/pvis');
-var pvis = new Pvis();
-//maybe
-//pvis.start();
+//var Pvis = require('./vis/pvis');
+//var pvis = new Pvis();
 
 var influx = require('influx')
 var kafka = require('kafka-node')
@@ -103,7 +101,7 @@ var dataLoader = function(){
 //      console.log(d);
       influxClient.writePoint('pvis', d, null, function(err, res){});
       var datas = {time:timestamp, nodes: delays, edges: edges};
-      pvis.setData(datas, total);
+//      pvis.setData(datas, total);
     });
   });
 }
