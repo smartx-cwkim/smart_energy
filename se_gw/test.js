@@ -15,7 +15,7 @@ var kafka = require('kafka-node')
 // InfluxDB client
 var influxClient = influx({
   // single-host configuration
-  host : '192.168.88.90',
+  host : '210.125.84.13',
   port : 8086, // optional, default 8086
   protocol : 'http', // optional, default 'http'
   username : 'admin',
@@ -23,16 +23,17 @@ var influxClient = influx({
   database : 'pvis'
 });
 
+
 var timely = require('timely');
 var label;
 var t;
 var controller = function(delays, total, cb){
 //    consolGe.log(m);
-  request('http://192.168.88.101:7777/sthcontrol', function(err, res, body){
+  request('http://203.237.53.78:7777/sthcontrol', function(err, res, body){
     t = res.caseless.get('x-response-time');
     t = t.substring(0, t.length-2);
     t = parseFloat(t);
-   label = "cController\ndelay: "+t+"ms";
+    label = "cController\ndelay: "+t+"ms";
     delays.push({data:{id: "cController", module: "#6272A3", delay: t, tag: label}});
     total += t;
     cb();
@@ -43,7 +44,7 @@ var tController = timely.async(controller);
 
 var dataExtractor = function(){
   factorial(150);
-  return 'DataExtractor';
+  return 0;
 };
 var tDataExtractor = timely(dataExtractor);
 app.use(responseTime());
@@ -60,16 +61,11 @@ var edges = [
   {data:{source:"DataExtractor", target:"oController"}},
   {data:{source:"oController", target:"cController"}}];
 
-var done = function(err, res){
-  if(err)
-    console.log(err);
-}
-
 var dataLoader = function(){
   var consumer;
   var kafka = require('kafka-node'),
   Consumer = kafka.Consumer,
-  client = new kafka.Client('192.168.88.91:2181'),
+  client = new kafka.Client('203.237.53.78:2181'),
 //    topics = [{topic: 'smart_energy160605', partition:topicn}];
   topics = [{topic: 'se'}];
   consumer = new Consumer(
@@ -105,16 +101,9 @@ var dataLoader = function(){
 //      delays.push({data:{id: "Service Performance", module: "X", delay: total, tag: label}});
       var d = {time:timestamp, Total: total, DataLoader: diff, DataExtractor: tDataExtractor.time, oController: tController.time, cController:t};
 //      console.log(d);
-      influxClient.writePoint('pvis', d, null, done);
+      influxClient.writePoint('pvis', d, null, function(err, res){});
       var datas = {time:timestamp, nodes: delays, edges: edges};
       pvis.setData(datas, total);
-/*
-      console.log(datas);
-      console.log('\nnodes');
-      console.log(datas.nodes);
-      console.log('\nedges');
-      console.log(datas.edges);
-      console.log(total+'ms\n');*/
     });
   });
 }
