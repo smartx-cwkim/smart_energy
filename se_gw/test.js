@@ -41,7 +41,7 @@ var controller = function(delays, total, cb){
 var tController = timely.async(controller);
 
 var dataExtractor = function(){
-  factorial(50);
+  factorial(200);
   return 0;
 };
 var tDataExtractor = timely(dataExtractor);
