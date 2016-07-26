@@ -63,7 +63,7 @@ var dataLoader = function(){
   var consumer;
   var kafka = require('kafka-node'),
   Consumer = kafka.Consumer,
-  client = new kafka.Client('203.237.53.78:2181'),
+  client = new kafka.Client('192.168.88.147:2181'),
 //    topics = [{topic: 'smart_energy160605', partition:topicn}];
   topics = [{topic: 'se'}];
   consumer = new Consumer(
