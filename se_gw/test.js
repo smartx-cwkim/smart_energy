@@ -13,7 +13,7 @@ var kafka = require('kafka-node')
 // InfluxDB client
 var influxClient = influx({
   // single-host configuration
-  host : '210.125.84.13',
+  host : '192.168.88.147',
   port : 8086, // optional, default 8086
   protocol : 'http', // optional, default 'http'
   username : 'admin',
