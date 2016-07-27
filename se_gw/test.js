@@ -17,9 +17,17 @@ var influxClient = influx({
   protocol : 'http', // optional, default 'http'
   username : 'admin',
   password : 'admin',
-  database : 'pvis'
+  database : 'nuc06'
 });
 
+var influxClient2 = influx({
+  host : 'K-BOX',
+  port : 8086, // optional, default 8086
+  protocol : 'http', // optional, default 'http'
+  username : 'admin',
+  password : 'admin',
+  database : 'pvis'
+});
 
 var controller = function(ip, cb){
 //    consolGe.log(m);
@@ -50,6 +58,8 @@ consumer = new Consumer(
 
 var buf = [];
 var batchsize = 500;
+var start = new Date();
+var batchdelay = -1;
 consumer.on('message', function (message) {
   var msg = message.value;
   msg = JSON.parse(msg);
@@ -57,15 +67,15 @@ consumer.on('message', function (message) {
 
 
   if(buf.length >= batchsize){
+    var end = new Date();
     buf.sort(tempsort);
+    batchdelay = end-start;
     console.log("Highest temp in recent " +batchsize+" data : "+buf[0].env.temp);
+    influxClient.writePoint('nuc06', {time: new Date(), temp: buf[0].env.temp}, null, function(err, res){});
+    influxClient2.writePoint('pvis', {time: new Date(), batchdelay:batchdelay}, null, function(err, res){});
     buf = [];
+    start = new Date();
   }
-
-  timestamp = new Date();
-  controller(msg.ip, function(){
-//    influxClient.writePoint('pvis', d, null, function(err, res){});
-  });
 });
 
 function tempsort(a, b){
