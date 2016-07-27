@@ -49,7 +49,7 @@ consumer = new Consumer(
 );
 
 var buf = [];
-var batchsize = 1000;
+var batchsize = 500;
 consumer.on('message', function (message) {
   var msg = message.value;
   msg = JSON.parse(msg);
