@@ -1,12 +1,24 @@
 var exec = require('child_process').exec;
 
-setInterval(getAllStatus, 1000);
-
+setInterval(getAllStatus, 2000);
 //getAllStatus();
+var latestDB, latestapp, latestbroker;
+
+var edges = [
+  {data:{source:"se_app", target:"influxdb"}},
+  {data:{source:"influxdb", target:"se_app"}},
+  {data:{source:"broker", target:"se_app"}};
+
 
 function getAllStatus(){
-  getStatus('influxdb', '210.125.84.13:2376', function(ret){console.log(ret);});
-  getStatus('se_gw', '192.168.88.147:2376', function(ret){console.log(ret);});
+  var topoData = [];
+  getStatus('influxdb', '210.125.84.13:2376', function(ret){latestDB = ret;});
+  getStatus('se_app', '192.168.88.147:2376', function(ret){latestapp = ret;});
+  getStatus('broker', '192.168.88.147:2376', function(ret){latestbroker = ret;});
+  if(latestDB != null && latestapp != null && latestbroker != null){
+    topoData.push(latestDB); topoData.push(latestapp); topoData.push(latestbroker);
+    console.log(topoData);
+  }
 }
 
 //해당 머신에 있는 컨테이너의 상태값을 가져온다.
@@ -22,6 +34,6 @@ function parsing(name, stdout){
   stdout = stdout.replace(/\s\s+/g, ' ').split(" ");
   if(stdout[16]=='GB')
     stdout[15]*=1024;
-  var ret = {'name':name, 'cpu': stdout[14], 'mem(MB)': stdout[15], 'mem(%)': stdout[20]};
+  var ret = {'id':name, 'cpu': stdout[14], 'mem(MB)': stdout[15], 'mem(%)': stdout[20]};
   return ret;
 }

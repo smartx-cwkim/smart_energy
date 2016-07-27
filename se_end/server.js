@@ -21,7 +21,7 @@ var addresss = [];
 for(var k in interfaces) {
   for(var k2 in interfaces[k]) {
     var address = interfaces[k][k2];
-    if(address.family === 'IPv4' && !address.internal && address.address.includes("192.168.88")) {
+    if(address.family === 'IPv4' && !address.internal && address.address[8]=='8') {
       addresss.push(address.address);
     }
   }
@@ -46,7 +46,7 @@ producer.on('ready', function(){
 
 app.get('/dataDensity/:density', function(req, res){
   density = req.params.density;
-  period/=density;
+  period=1000/density;
   res.send("Data density: "+density+" data/sec \n");
 });
 
