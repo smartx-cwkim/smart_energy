@@ -24,7 +24,7 @@ var influxClient = influx({
 var controller = function(ip, cb){
 //    consolGe.log(m);
   request('http://'+ip+':7777/sthcontrol', function(err, res, body){
-    if(res.body == 'ok'){
+    if(!err && res.body == 'ok'){
     }
   });
   cb();
@@ -48,17 +48,29 @@ consumer = new Consumer(
   {groupId: 'se_gw', autoCommit: true}
 );
 
+var buf = [];
+var batchsize = 1000;
 consumer.on('message', function (message) {
-//      sleep.usleep(300000+Math.random()*50000); // 1초에 대충 3개
   var msg = message.value;
   msg = JSON.parse(msg);
-  console.log(msg);
-  timestamp = new Date();
+  buf.push(msg);
 
+
+  if(buf.length >= batchsize){
+    buf.sort(tempsort);
+    console.log("Highest temp in recent " +batchsize+" data : "+buf[0].env.temp);
+    buf = [];
+  }
+
+  timestamp = new Date();
   controller(msg.ip, function(){
 //    influxClient.writePoint('pvis', d, null, function(err, res){});
   });
 });
 
+function tempsort(a, b){
+  if(a.env.temp == b.env.temp){return 0;}
+  return a.env.temp > b.env.temp ? -1: 1;
+}
 
 app.listen(5555);
