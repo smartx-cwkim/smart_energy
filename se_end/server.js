@@ -4,7 +4,7 @@ var responseTime = require('response-time');
 var os = require('os');
 
 var app = express();
-var period = 1000;
+var period = 100;
 var density = 1;
 
 var kafka = require('kafka-node'),
