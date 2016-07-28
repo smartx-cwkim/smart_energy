@@ -14,7 +14,7 @@ var influxClient = influx({
 });
 
 var app = express();
-var period = 100;
+var period = 1000;
 var density = 10;
 
 var kafka = require('kafka-node'),
