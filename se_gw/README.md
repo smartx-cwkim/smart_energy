@@ -1,7 +1,4 @@
-LiveTest Docker private Registry 2nd time
+LiveTest Docker private Registry 15th time
 
-why it isn't build
 
-test please!!
-
-not 148 go 147
+ahfwaouifhoadnfldfjasfiahwfoia
