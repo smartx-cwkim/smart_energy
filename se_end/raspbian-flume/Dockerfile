@@ -26,4 +26,4 @@ ADD plugins.d /flume/plugins.d
 ADD flume-conf.properties /flume/conf/
 
 #Working directory
-
+WORKDIR /flume
